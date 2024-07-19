@@ -1,8 +1,13 @@
-import Plant from "./../models/Plant.js";
+import Plant from "./../models/Plant.js"
 
-
-const postPlant = async (req, res)=>{
-    const {name, category, image, price, description} = req.body
+const postPlant = async (req, res) => {
+    const {
+        name,
+        category,
+        image,
+        price,
+        description
+    } = req.body
 
     const newPlant = new Plant({
         name: name,
@@ -21,30 +26,36 @@ const postPlant = async (req, res)=>{
     })
 }
 
-const getPlants = async (req, res)=>{
-
-const allPlants = await Plant.find()
+const getPlants = async (req, res) => {
+    const allPlants = await Plant.find().sort({updatedAt: -1})
 
     res.json({
         success: true,
         data: allPlants,
-        message: "All plants fatched successsfully"
+        message: "All plants fetched successfully"
     })
 }
 
-const getPlantId = async (req, res)=>{
-    const {id} = req.params
+const getPlantId = async (req, res) => {
+    const { id } = req.params
 
     const plant = await Plant.findById(id)
+
     res.json({
         success: plant ? true : false,
         data: plant || null,
-        message: plant ? "Plant fetched successfully" : "plant not found"
+        message: plant ? "Plant fetched successfully" : "Plant not found"
     })
 }
 
 const putPlantId = async (req, res)=>{
-    const {name, category, image, price, description} = req.body
+    const {
+        name,
+        category,
+        image,
+        price,
+        description
+    } = req.body
 
     const {id} = req.params
 
@@ -57,18 +68,19 @@ const putPlantId = async (req, res)=>{
             description: description
         }
     })
- const updatedPlant = await Plant.findById(id)
+
+    const updatedPlant = await Plant.findById(id)
 
     res.json({
         success: true,
-        message: "Plant updated successfully",
+        message: `Plant updated successfully`,
         data: updatedPlant
     })
 }
 
 const deletePlantId = async (req, res)=>{
     const {id} = req.params
-    
+
     await Plant.deleteOne({
         _id: id
     })
@@ -80,7 +92,7 @@ const deletePlantId = async (req, res)=>{
     })
 }
 
-export {
+export{
     postPlant,
     getPlants,
     getPlantId,
